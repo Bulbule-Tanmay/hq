@@ -5,7 +5,7 @@ import {
   Briefcase, Trophy, CurrencyInr, Handshake, VideoCamera, Package, Lightbulb, ChartLineUp,
   Barbell, ForkKnife, Sparkle, Moon, DeviceMobile, CalendarCheck, Megaphone, CastleTurret,
   House, Plus, Trash, PencilSimple, Check, X, ArrowSquareOut, List, SignOut, Lock, Warning,
-  MagnifyingGlass, CaretRight, ArrowClockwise, Crosshair,
+  MagnifyingGlass, CaretRight, ArrowClockwise, Crosshair, ClipboardText,
 } from '@phosphor-icons/react';
 
 const MAP = {
@@ -15,6 +15,7 @@ const MAP = {
   money: CurrencyInr, clients: Handshake, ugc: VideoCamera, products: Package, ideas: Lightbulb, investing: ChartLineUp,
   fitness: Barbell, nutrition: ForkKnife, appearance: Sparkle, sleep: Moon, screen: DeviceMobile, chess: CastleTurret,
   planner: CalendarCheck, social: Megaphone,
+  review: ClipboardText,
 };
 
 export function Icon({ name, size = 20, weight = 'regular' }) {

@@ -360,3 +360,57 @@ textarea { resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* ───── end of day review */
+.good-text { color: var(--good); }
+.warn-text { color: var(--warn); }
+.quiz { gap: var(--s-16); max-width: 720px; }
+.quiz-progress { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-12); align-items: center; }
+.quiz-progress .bar { margin-top: 0; }
+.quiz-topic { display: flex; align-items: center; gap: var(--s-8); color: var(--accent); font-weight: 600; }
+.quiz-q { font-size: 1.5rem; line-height: 2rem; }
+.quiz-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--s-8); margin-top: var(--s-8); }
+.quiz-opt { justify-content: flex-start; padding: var(--s-12) var(--s-16); }
+.quiz-opt.picked { border-color: var(--accent); color: var(--accent); }
+.quiz-opt kbd {
+  display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: var(--r-8);
+  background: var(--bg); border: 1px solid var(--line-strong); font: inherit; font-size: 0.75rem; line-height: 1rem; color: var(--muted);
+}
+.quiz-nav { display: flex; justify-content: space-between; align-items: center; gap: var(--s-12); flex-wrap: wrap; margin-top: var(--s-8); }
+.analysis { display: flex; flex-direction: column; gap: var(--s-16); }
+.analysis-summary { font-size: 1.125rem; line-height: 1.75rem; max-width: 68ch; }
+.analysis-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s-24); }
+.analysis-h { font-size: 0.875rem; line-height: 1.25rem; margin-bottom: var(--s-8); }
+.analysis ul, .analysis ol { display: flex; flex-direction: column; gap: var(--s-8); font-size: 0.875rem; line-height: 1.25rem; }
+.analysis ul { list-style: disc; padding-left: var(--s-16); }
+.analysis-next { list-style: decimal; padding-left: var(--s-24); }
+.analysis-sk { height: 160px; }
+
+/* ───── contribution graph */
+.contrib { --cell: 12px; --gap: 3px; display: flex; flex-direction: column; gap: var(--s-16); }
+.contrib-top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-16); flex-wrap: wrap; }
+.contrib-stats { display: flex; gap: var(--s-24); flex-wrap: wrap; }
+.contrib-stats > div { display: flex; flex-direction: column; }
+.contrib-num { font-size: 1.5rem; line-height: 2rem; font-weight: 600; }
+.contrib-scroll { overflow-x: auto; padding-bottom: var(--s-8); }
+.contrib-wrap { display: flex; gap: var(--s-8); width: max-content; }
+.contrib-days { display: grid; grid-template-rows: repeat(7, var(--cell)); gap: var(--gap); margin-top: calc(15px + var(--gap)); font-size: 0.6875rem; line-height: var(--cell); color: var(--muted); }
+.contrib-main { display: flex; flex-direction: column; gap: var(--gap); }
+.contrib-months { display: grid; grid-template-columns: repeat(var(--weeks), var(--cell)); column-gap: var(--gap); height: 15px; font-size: 0.6875rem; line-height: 15px; color: var(--muted); }
+.contrib-months span { white-space: nowrap; overflow: visible; }
+.contrib-cells { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, var(--cell)); grid-auto-columns: var(--cell); gap: var(--gap); }
+.cell { display: block; width: var(--cell); height: var(--cell); border-radius: 3px; background: var(--raised); box-shadow: inset 0 0 0 1px var(--line); }
+.cell.l1 { background: rgba(157, 177, 255, 0.28); box-shadow: none; }
+.cell.l2 { background: rgba(157, 177, 255, 0.5); box-shadow: none; }
+.cell.l3 { background: rgba(157, 177, 255, 0.75); box-shadow: none; }
+.cell.l4 { background: var(--accent); box-shadow: none; }
+.cell.future { background: transparent; box-shadow: none; }
+.cell.today { outline: 1px solid var(--text); outline-offset: 1px; }
+.cell.picked { outline: 1px solid var(--accent); outline-offset: 1px; }
+.contrib-cells .cell:not(.future) { cursor: pointer; }
+.contrib-foot { display: flex; justify-content: space-between; align-items: center; gap: var(--s-16); flex-wrap: wrap; }
+.legend { display: flex; align-items: center; gap: var(--s-4); }
+.legend .muted { margin: 0 var(--s-4); font-size: 0.75rem; }
+@media (min-width: 901px) {
+  .contrib { --cell: 15px; }
+}

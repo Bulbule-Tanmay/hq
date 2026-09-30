@@ -65,6 +65,9 @@ export default function Shell({ children }) {
           <Link href="/" className="nav-item" aria-current={pathname === '/' ? 'page' : undefined}>
             <UI.House size={18} /> Home
           </Link>
+          <Link href="/review" className="nav-item" aria-current={pathname === '/review' ? 'page' : undefined}>
+            <Icon name="review" size={18} /> End of day review
+          </Link>
           {groups.map((g) => (
             <div key={g.id} className="nav-group">
               <p className="nav-heading">{g.name}</p>
