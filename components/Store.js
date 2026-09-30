@@ -23,6 +23,8 @@ export function StoreProvider({ children }) {
   const [error, setError] = useState('');
   const [toast, setToast] = useState('');
   const timer = useRef();
+  const entriesRef = useRef([]);
+  entriesRef.current = entries;
 
   const flash = useCallback((msg) => {
     setToast(msg);
@@ -52,8 +54,9 @@ export function StoreProvider({ children }) {
     async (module, items) => {
       try {
         const json = await api('/api/entries', { method: 'POST', body: JSON.stringify({ module, items }) });
+        entriesRef.current = [...json.rows, ...entriesRef.current];
         setEntries((prev) => [...json.rows, ...prev]);
-        return true;
+        return json.rows;
       } catch (e) {
         flash(`Could not save. ${e.message}`);
         return false;
@@ -66,22 +69,21 @@ export function StoreProvider({ children }) {
 
   const update = useCallback(
     async (id, patch, { replace = false } = {}) => {
-      let previous;
-      let next;
-      setEntries((prev) =>
-        prev.map((e) => {
-          if (e.id !== id) return e;
-          previous = e;
-          next = { ...(replace ? {} : e.data), ...patch };
-          delete next._seed;
-          return { ...e, data: next, updated_at: new Date().toISOString() };
-        })
-      );
+      // Work out the new data here, not inside the state updater: React may run the
+      // updater later, and the request below needs the value straight away.
+      const previous = entriesRef.current.find((e) => e.id === id);
+      if (!previous) return false;
+      const next = { ...(replace ? {} : previous.data), ...patch };
+      delete next._seed;
+      const updated = { ...previous, data: next, updated_at: new Date().toISOString() };
+      entriesRef.current = entriesRef.current.map((e) => (e.id === id ? updated : e));
+      setEntries((prev) => prev.map((e) => (e.id === id ? updated : e)));
       try {
         await api('/api/entries', { method: 'PATCH', body: JSON.stringify({ id, data: next }) });
         return true;
       } catch (e) {
-        if (previous) setEntries((prev) => prev.map((x) => (x.id === id ? previous : x)));
+        entriesRef.current = entriesRef.current.map((x) => (x.id === id ? previous : x));
+        setEntries((prev) => prev.map((x) => (x.id === id ? previous : x)));
         flash(`Could not update. ${e.message}`);
         return false;
       }

@@ -8,6 +8,7 @@ import { useStore } from './Store';
 import { Icon, UI } from './icons';
 import KpiTile from './KpiTile';
 import EntryDialog from './EntryDialog';
+import ContributionGraph from './ContributionGraph';
 
 const TODAY = [
   ['nutrition', 0, 'Protein today'],
@@ -67,7 +68,10 @@ export default function HomeView() {
     kp[m.slug].filter((k) => k.warn).map((k) => ({ slug: m.slug, text: `${m.name}: ${k.label} is ${k.text}, over the limit of ${k.targetText}.` }))
   );
 
-  const reviewDone = (byModule.planner || []).some((e) => e.data?.kind === 'Review' && e.data?.date === now?.toLocaleDateString('en-CA'));
+  const todayKey = now?.toLocaleDateString('en-CA');
+  const reviewDone =
+    (byModule.planner || []).some((e) => e.data?.kind === 'Review' && e.data?.date === todayKey) ||
+    (byModule.review || []).some((e) => e.data?.date === todayKey);
   const reviewDue = status === 'ready' && now && now.getHours() >= 21 && !reviewDone;
 
   const hour = now?.getHours();
@@ -96,8 +100,8 @@ export default function HomeView() {
       ) : null}
 
       {reviewDue ? (
-        <Link href="/m/planner" className="notice warn">
-          <p>Your end of day review is not logged yet. Take two minutes and score today.</p>
+        <Link href="/review" className="notice warn">
+          <p>Your end of day review is not done yet. Take two minutes and score today.</p>
           <span className="btn small">Open review</span>
         </Link>
       ) : null}
@@ -177,6 +181,14 @@ export default function HomeView() {
             {share === null ? ' Log something today to start the count.' : ''}
           </p>
         ) : null}
+      </section>
+
+      <section className="panel" aria-labelledby="act-h">
+        <div className="panel-head">
+          <h2 id="act-h" className="panel-title">Consistency</h2>
+          <Link href="/review" className="btn small"><Icon name="review" size={16} /> End of day review</Link>
+        </div>
+        {loading ? <div className="skeleton analysis-sk" aria-busy="true" aria-label="Loading" /> : <ContributionGraph />}
       </section>
 
       {warnings.length ? (
